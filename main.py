@@ -14,10 +14,25 @@ Comanda = {'Comanda1': {'data' : '2020-12-25T00:05:23','fruct' : 'Banane','canti
            'Comanda5': {'data' : '2020-12-27T00:05:23','fruct' : 'Banane','cantitate' : 45},
            'Comanda6': {'data' : '2020-12-27T00:05:23','fruct' : 'Banana2','cantitate' : 4}
            }
+def creare_data():
+    luna1 = 100
+    zile1 = 100
+    ora1 = 100
+    minut1 = 100
+    nrZile1 = 0
+    an1 = 0
+    while(an1 < 1):
+        an1 = int(input("introdu anul pentru timestamp "))
+    while(luna1 > 12 or luna1 <= 0):
+        luna1 = int(input("introdu luna pentru timestamp "))
+    while(zile1 > 31 or zile1 <= 0):
+        zile1 = int(input("introdu ziua pentru timestamp "))
+    while(ora1 > 24 or ora1 < 0):
+        ora1 = int(input("introdu ora pentru timestamp "))
+    while(minut1 < 0 or minut1 > 60):
+        minut1 = int(input("introdu minutele pentru timestamp "))
+    return datetime(an1, luna1, zile1, ora1, minut1, 0, 0 )
 
-db.insert(Inventar)
-db.insert(Comanda)
-Valori = db.all()
 
 def numar_marfa(Valori, TimeStamp, Zile):
 
@@ -45,6 +60,7 @@ def numar_marfa(Valori, TimeStamp, Zile):
 
     print(valoriMaxime)
     print (perioada)
+    print(Valori)
 
     print("\n")
     for iterator in range (0,len(valoriMaxime)):
@@ -83,6 +99,17 @@ def main():
     minut = 100
     nrZile = 0
     an = 0
+    more = ""
+
+    more = input("vrei sa dai ceva de la tastatura")
+    while(more == "da"):
+        nou = str(creare_data())
+        fructn = input("da un fruct")
+        cantitaten = input("da o cantitate")
+        comandan ={f'Comanda{len(Comanda)+1}':{'data': nou , 'fruct' : fructn, 'cantitate' : int(cantitaten)}}
+        Comanda.update(comandan)
+        more = input("vrei sa dai ceva de la tastatura")
+
     while(nrZile < 1):
         nrZile = int(input("introdu numarul de zile "))
     while(an < 1):
@@ -97,6 +124,11 @@ def main():
         minut = int(input("introdu minutele pentru timestamp "))
     print(datetime(an, luna, zile, ora, minut, 0, 0 ))
     timp = datetime(an, luna, zile, ora, minut, 0, 0 )
+
+    db.insert(Inventar)
+    db.insert(Comanda)
+    Valori = db.all()
+
     numar_marfa(Valori, timp ,int(nrZile))
     aux =open('db.json','w')
     aux.write('{}')
